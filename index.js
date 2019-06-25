@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './src/App.jsx';
+import Home from './frontend/components/Home';
+import routes from './frontend/routes';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(routes, document.getElementById('root'));

@@ -1,26 +1,10 @@
-## HR Performance Review App
-This web application that allows employees to submit feedback toward each other's performance review.
+# Full Stack Developer Challenge
+This is an interview challenge. Please feel free to fork. Pull Requests will be ignored.
 
-The app structure is as follows.
-```
-- app
-  - frontend
-    - components
-    - routes.js
-  - backend
-    - bin
-    - node_modules
-    - routes
-    - apiServer.js
-    - server.js
-    - app.js
-  - webpack.config.js
-  - package.json
-  - projectREADME.md
-  - README.md
-  - index.js
-```
+## Requirements
+Design a web application that allows employees to submit feedback toward each other's performance review.
 
+*Partial solutions are acceptable.*  It is not necessary to submit a complete solution that implements every requirement.
 
 ### Admin view
 * Add/remove/update/view employees
