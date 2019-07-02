@@ -2,28 +2,25 @@ import React, { Component } from 'react';
 import ReactDOM from "react-dom";
 import { Route , withRouter} from 'react-router-dom';
 
-function validate(email, password) {
+function validate(name, password) {
   // we are going to store errors for all fields
   const errors = [];
 
-  if (email.length === 0) {
-    errors.push("Email can't be empty");
+  if (name.length === 0) {
+    errors.push("name can't be empty");
   }
 
-  if (email.length < 5) {
-    errors.push("Email should be at least 5 charcters long");
-  }
-  if (email.split("").filter(x => x === "@").length !== 1) {
-    errors.push("Email should contain a @");
-  }
-  if (email.indexOf(".") === -1) {
-    errors.push("Email should contain at least one dot");
+  if (name.length < 5) {
+    errors.push("name should be at least 5 charcters long");
   }
 
   // if (password.length < 6) {
   //   errors.push("Password should be at least 6 characters long");
   // }
-
+  if (name !== "admin") {
+    errors.push("Name is invalid");
+  }
+  
   if (password !== "admin") {
     errors.push("Password is invalid");
   }
@@ -31,7 +28,7 @@ function validate(email, password) {
   return errors;
 }
 
-class SignUpForm extends React.Component {
+class LoginForm extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -44,20 +41,18 @@ class SignUpForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    const email = ReactDOM.findDOMNode(this._emailInput).value;
+    const name = ReactDOM.findDOMNode(this._nameInput).value;
     const password = ReactDOM.findDOMNode(this._passwordInput).value;
-    // const email = e.target.email;
+    // const name = e.target.name;
     // const password = e.target.password;
 
-    console.log(email,password)
-    const errors = validate(email, password);
+    console.log(name,password)
+    const errors = validate(name, password);
     if (errors.length > 0) {
       this.setState({ errors });
       return;
     }
 
-    // submit the data...
-    console.log(email, password);
     this.props.history.push('/admin');
   }
 
@@ -69,9 +64,9 @@ class SignUpForm extends React.Component {
           <p key={error}>Error: {error}</p>
         ))}
         <input
-          ref={emailInput => (this._emailInput = emailInput)}
+          ref={nameInput => (this._nameInput = nameInput)}
           type="text"
-          placeholder="Email"
+          placeholder="name"
         />
         <input
           ref={passwordInput => (this._passwordInput = passwordInput)}
@@ -85,4 +80,4 @@ class SignUpForm extends React.Component {
   }
 }
 
-export default withRouter(SignUpForm);
+export default LoginForm;

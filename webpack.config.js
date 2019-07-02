@@ -1,28 +1,24 @@
-var path = require('path');
-var webpack = require('webpack');
- 
+let path = require('path');
+
+const webpack = require('webpack');
+
 module.exports = {
-  entry: './index.js',
-  output: { path: path.resolve(__dirname, 'public'), filename: 'bundle.js' },
+  entry: './src/client.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'public')
+  },
+  watch: true,
   module: {
-    rules: [
+    loaders: [
       {
-        test: /.jsx?$/,
+        test:/\.js$/,
+        exclude:/node_modules/,
         loader: 'babel-loader',
-        exclude: /node_modules/,
         query: {
-          presets: ['react', 'es2015'],
-          plugins: ['transform-class-properties']
+          presets: [ 'react', 'es2015', 'stage-1' ]
         }
-      },
-      {
-        test: /.css?$/,
-        loader: ['style-loader', 'css-loader'],
-        exclude: /node_modules/
       }
     ]
-  },
-  resolve: {
-    extensions: ['jsx', '.js', '.ts', '.tsx']
-  },
-};
+  }
+}

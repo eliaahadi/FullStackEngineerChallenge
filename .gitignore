@@ -1,1 +1,6 @@
+.DS_Store
 node_modules
+.vscode/database.json
+public/bundle.js
+public/bundle.js.map
+yarn.lock
