@@ -26,16 +26,13 @@ class ReviewsFormAdmin extends React.Component{
   }
    
   componentDidMount(){
-    console.log('\n \n reviewForm this props \n \n', this.props)
     this.setState({...this.state, isFetching: true});
       this.props.getReviews();
-      // getEmployees;
      
     //GET REVIEWS FROM API
      axios.get('/api/reviews')
     .then(function(response){
       this.setState({reviews:response.data});
-      console.log('review state', this.state.reviews);
     }.bind(this))
     .catch(function(err){
       this.setState({reviews:'error loading reviews files from the server', review:''})
@@ -46,14 +43,12 @@ class ReviewsFormAdmin extends React.Component{
    axios.get('/api/employees')
   .then(function(response){
     this.setState({employees:response.data});
-    console.log('employee state', this.state.employees);
   }.bind(this))
   .catch(function(err){
     this.setState({employees:'error loading employees files from the server', employee:''})
   }.bind(this))
-
-    
   }
+
   addReviewSubmit(){
     const review =
     [
@@ -64,13 +59,20 @@ class ReviewsFormAdmin extends React.Component{
         reviewsBy: {_id: findDOMNode(this.refs.reviewBy).value, name: this.state.showValuesAddReviewBy}
       }
     ]
-    console.log("post reviews ", review, review[0].reviewsFor.name)
+    if (review[0].reviewsFor === "") {
+      alert('Reviewee name must not be empty to save it')
+    } 
     if (review[0].rate === "") {
-      alert('Review name must not be empty to save it')
-    } else {
-      
+      alert('Review rate must not be empty to save it')
+    }
+    if (review[0].comment === "") {
+      alert('Review comment must not be empty to save it')
+    }
+    if (review[0].reviewsBy === "") {
+      alert('Reviewer name must not be empty to save it')
+    }
+    else {
       this.props.postReview(review);
-
     }
   }
 
@@ -82,14 +84,15 @@ class ReviewsFormAdmin extends React.Component{
         comment: findDOMNode(this.refs.updatecomment).value,
       }
     ]
+    if (review[0].rate === "") {
+      alert('Review rate must not be empty to save it')
+    } 
     if (review[0].name === "") {
       alert('Review name must not be empty to save it')
-    } else {
-      console.log('updateReview function ', review, this.state.showValuesUpdate._id)
-      this.props.updateReview(review, this.state.showValuesUpdate._id);
-
     }
-    console.log("update reviews SUBMIT ", this.refs, review, this.state.showValuesUpdate._id)
+    else {
+      this.props.updateReview(review, this.state.showValuesUpdate._id);
+    }
   }
 
   onDelete(){
@@ -105,25 +108,19 @@ class ReviewsFormAdmin extends React.Component{
     this.setState({
       review: review._id
     })
-    // let inputValues = this.state.values;
     this.setState({showValuesUpdate: review});
-    console.log('handle select review ', review, review._id, '\n review name ', review.reviewsFor.name, '\n show values ', this.state.showValuesUpdate)
   }
   handleSelectAddReviewFor(employee){
     this.setState({
       employeeAddReviewFor: employee._id
     })
-    // let inputValues = this.state.values;
     this.setState({showValuesAddReviewFor: employee});
-    console.log('handle select ADD reviewee ', employee, employee._id, '\n employee name ', employee.name, '\n show values ', this.state.showValuesAddReviewFor)
   }
   handleSelectAddReviewBy(employee){
     this.setState({
       employeeAddReviewBy: employee._id
     })
-    // let inputValues = this.state.values;
     this.setState({showValuesAddReviewBy: employee});
-    console.log('handle select ADD reviewer ', employee, employee._id, '\n employee name ', employee.name, '\n show values ', this.state.showValuesAddReviewBy)
   }
 
   resetFormAdd(){
@@ -152,7 +149,6 @@ class ReviewsFormAdmin extends React.Component{
     })
 
     const reviewsListSelect = this.props.reviews && this.props.reviews.length > 0 ? this.props.reviews.map(function(reviewArr){
-      console.log('rA ===> ', reviewArr.reviewsFor.name)
       return (
        <li key={reviewArr._id}>
           id: {reviewArr._id} - reviewsFor: {reviewArr.reviewsFor.name} - rating: {reviewArr.rate} - comment: {reviewArr.comment} - reviewsBy: {reviewArr.reviewsBy.name}
@@ -162,7 +158,6 @@ class ReviewsFormAdmin extends React.Component{
 
     const reviewsList = this.props.reviews && this.props.reviews.length > 0 ?
     this.props.reviews.map(function(reviewArr){
-      console.log("reviewsList map -> ", reviewArr)
       return(
         <MenuItem key={reviewArr._id}
         eventKey={reviewArr.name}
@@ -197,10 +192,6 @@ class ReviewsFormAdmin extends React.Component{
           )
         }, this)
 
-    console.log('this.state.reviews ', this.state.reviews)
-    console.log('this.state.showValuesUpdate ', this.state.showValuesUpdate, this.state.showValuesUpdate.reviewsFor)
-    console.log('this.state.showValuesAddReviewFor ', this.state.showValuesAddReviewFor, this.state.showValuesAddReviewFor.name)
-    console.log('this.state.showValuesAddReviewBy ', this.state.showValuesAddReviewBy, this.state.showValuesAddReviewBy.name)
     return(
       <Well>
         <Row>
@@ -225,12 +216,12 @@ class ReviewsFormAdmin extends React.Component{
                 {reviewsList}
               </DropdownButton>
           </InputGroup>
-          <div>
+          <div className='align liststyle'>
           Review for {this.state.showValuesUpdate.reviewsFor && this.state.showValuesUpdate.reviewsFor.name.length > 0 ? this.state.showValuesUpdate.reviewsFor.name
           : <div></div>
           }
           </div>
-          <div>
+          <div className='align liststyle'>
           Review by {this.state.showValuesUpdate.reviewsBy && this.state.showValuesUpdate.reviewsBy.name.length > 0 ? this.state.showValuesUpdate.reviewsBy.name
           : <div></div>
           }
@@ -271,7 +262,7 @@ class ReviewsFormAdmin extends React.Component{
                  {employeesListReviewFor}
               </DropdownButton>
           </InputGroup>
-          <div>
+          <div className='align liststyle'>
           Review for {this.state.showValuesAddReviewFor.name && this.state.showValuesAddReviewFor.name.length > 0 ? this.state.showValuesAddReviewFor.name
           : <div></div>
           }
@@ -303,7 +294,7 @@ class ReviewsFormAdmin extends React.Component{
                 {employeesListReviewBy}
               </DropdownButton>
           </InputGroup>
-          <div>
+          <div className='align liststyle'>
           Review by {this.state.showValuesAddReviewBy.name && this.state.showValuesAddReviewBy.name.length > 0 ? this.state.showValuesAddReviewBy.name
           : <div></div>
           }

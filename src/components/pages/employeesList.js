@@ -7,7 +7,6 @@ import {Carousel, Grid, Col, Row, Button} from 'react-bootstrap';
 import EmployeeItem from './employeeItem';
 import EmployeesForm from './employeesForm';
 
-
 class EmployeesList extends React.Component{
   componentDidMount(){
     this.props.getEmployees()
@@ -18,8 +17,8 @@ class EmployeesList extends React.Component{
         <Col xs={12} sm={6} md={4}
         key={employeesArr._id}>
           <EmployeeItem _id= {employeesArr._id}
-                  name={employeesArr.name}
-                  />
+            name={employeesArr.name}
+          />
         </Col>
       ) 
     })

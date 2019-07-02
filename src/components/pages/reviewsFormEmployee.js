@@ -20,7 +20,6 @@ class ReviewsFormEmployee extends React.Component{
   }
    
   componentDidMount(){
-    console.log('\n \n reviewForm this props \n \n', this.props)
     this.setState({...this.state, isFetching: true});
       this.props.getReviews();
      this.setState({...this.state, isFetching: false});
@@ -28,14 +27,12 @@ class ReviewsFormEmployee extends React.Component{
      axios.get('/api/reviews')
     .then(function(response){
       this.setState({reviews:response.data});
-      console.log('review state', this.state.reviews);
     }.bind(this))
     .catch(function(err){
       this.setState({reviews:'error loading reviews files from the server', review:''})
     }.bind(this))
-
-    
   }
+
   addReviewSubmit(){
     const review =
     [
@@ -45,14 +42,18 @@ class ReviewsFormEmployee extends React.Component{
       comment: findDOMNode(this.refs.comment).value
       }
     ]
+    if (review[0].reviewsFor === "") {
+      alert('Reviewee name must not be empty to save it')
+    } 
     if (review[0].rate === "") {
+      alert('Review rate must not be empty to save it')
+    } 
+    if (review[0].comment === "") {
       alert('Review name must not be empty to save it')
-    } else {
-      
+    } 
+    else {
       this.props.postReview(review);
-
     }
-    console.log("post reviews ", this.props.postReview(review), review, review[0].reviewsFor.name)
   }
 
   updateReviewSubmit(){
@@ -63,14 +64,14 @@ class ReviewsFormEmployee extends React.Component{
         comment: findDOMNode(this.refs.updatecomment).value,
       }
     ]
-    if (review[0].name === "") {
-      alert('Review name must not be empty to save it')
-    } else {
-      console.log('updateReview function ', review, this.state.showValues._id)
-      this.props.updateReview(review, this.state.showValues._id);
-
+    if (review[0].rate === "") {
+      alert('Review rate must not be empty to save it')
     }
-    console.log("update reviews SUBMIT ", this.refs, review, this.state.showValues._id)
+    if (review[0].comment === "") {
+      alert('Review comment must not be empty to save it')
+    } else {
+      this.props.updateReview(review, this.state.showValues._id);
+    }
   }
 
   onDelete(){
@@ -86,18 +87,10 @@ class ReviewsFormEmployee extends React.Component{
     this.setState({
       review: review._id
     })
-    // let inputValues = this.state.values;
     this.setState({showValues: review});
     console.log('handle select review ', review, review._id, '\n review name ', review.reviewsFor.name, '\n show values ', this.state.showValues)
   }
 
-  handleReview(review){
-    console.log('handle select review ', review, review._id)
-    // this.setState({
-    //   review: review._id
-    // })
-    // this.setState({showValues: review});
-  }
   resetFormAdd(){
     //RESET THE ADD Button
     this.props.resetButton();
@@ -124,30 +117,25 @@ class ReviewsFormEmployee extends React.Component{
     })
 
     const reviewsListSelect = this.props.reviews && this.props.reviews.length > 0 ? this.props.reviews.map(function(reviewArr){
-      console.log('rA ===> ', reviewArr.reviewsFor.name)
       return (
        <li key={reviewArr._id}>
-   id: {reviewArr._id} - reviewsFor: {reviewArr.reviewsFor.name} - rating: {reviewArr.rate} - comment: {reviewArr.comment} - reviewsBy: {reviewArr.reviewsBy.name}
+        id: {reviewArr._id} - reviewsFor: {reviewArr.reviewsFor.name} - rating: {reviewArr.rate} - comment: {reviewArr.comment} - reviewsBy: {reviewArr.reviewsBy.name}
        </li> 
         )
       }, this) : <span></span>;
 
     const reviewsList = this.props.reviews && this.props.reviews.length > 0 ?
     this.props.reviews.map(function(reviewArr){
-      console.log("reviewsList map -> ", reviewArr)
       return(
         <MenuItem key={reviewArr._id}
         eventKey={reviewArr.name}
         onClick={this.handleSelect.bind(this,
         reviewArr)}>
-             id: {reviewArr._id} - reviewsFor: {reviewArr.reviewsFor.name} - rating: {reviewArr.rate} - comment: {reviewArr.comment} - reviewsBy: {reviewArr.reviewsBy.name}
+          id: {reviewArr._id} - reviewsFor: {reviewArr.reviewsFor.name} - rating: {reviewArr.rate} - comment: {reviewArr.comment} - reviewsBy: {reviewArr.reviewsBy.name}
         </MenuItem>
         )
       }, this) : <span></span>;
 
-    console.log('this.state.reviews ', this.state.reviews)
-    console.log('this.state.showValues ', this.state.showValues, this.state.showValues.reviewsFor)
-    // console.log('this.state.showValues NAME ', this.state.showValues.reviewsFor.name)
     return(
       <Well>
         <Row>
@@ -159,7 +147,7 @@ class ReviewsFormEmployee extends React.Component{
           </Panel>
         </Row>
       <Row>
-       <Col xs={12} sm={6}>
+       <Col xs="auto" sm="auto" md="auto" lg="auto">
         <Panel>
           <InputGroup>
             <FormControl id={this.state.review} type="text"
@@ -172,31 +160,33 @@ class ReviewsFormEmployee extends React.Component{
                 {reviewsList}
               </DropdownButton>
           </InputGroup>
-          <div>
+          <div className='align liststyle'>
           Review for {this.state.showValues.reviewsFor && this.state.showValues.reviewsFor.name.length > 0 ? this.state.showValues.reviewsFor.name
           : <div></div>
           }
           </div>
-          <div>
+          <div className='align liststyle'>
           Review by {this.state.showValues.reviewsBy && this.state.showValues.reviewsBy.name.length > 0 ? this.state.showValues.reviewsBy.name
           : <div></div>
           }
           </div>
           <FormGroup controlId="name" validationState={this.props.validation}>
-            <ControlLabel>Update Review Rating</ControlLabel>
+            <ControlLabel > <div className='align'>
+              Update Review Rating</div></ControlLabel>
             <FormControl
             type="text"
             placeholder={this.state.showValues.rate}
             ref="updaterate" />
-            <FormControl.Feedback />
+            <FormControl.Feedback className='align'/>
           </FormGroup>
           <FormGroup controlId="name" validationState={this.props.validation}>
-            <ControlLabel>Update Review Comment</ControlLabel>
+            <ControlLabel className='align'>Update Review Comment</ControlLabel>
             <FormControl
             type="text"
+            
             placeholder={this.state.showValues.comment}
             ref="updatecomment" />
-            <FormControl.Feedback />
+            <FormControl.Feedback className='align'/>
           </FormGroup>
         <Button
         onClick={(!this.props.updatemsg)?(this.updateReviewSubmit.bind(this)):(this.resetFormUpdate.bind(this))}

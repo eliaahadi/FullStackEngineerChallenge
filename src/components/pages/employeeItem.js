@@ -12,7 +12,6 @@ class EmployeeItem extends React.Component{
       {
       _id: this.props._id,
       name: this.props.name,
-
       }
     ]
 
@@ -20,7 +19,6 @@ class EmployeeItem extends React.Component{
     if(this.props.employee.length > 0) {
       // EMPLOYEE IS NOT EMPTY
       let _id = this.props._id;
-
       let employeeIndex = this.props.employee.findIndex(function(employee){
         return employee._id === _id;
       })
@@ -29,7 +27,6 @@ class EmployeeItem extends React.Component{
         this.props.postEmployee(employee);
       } else {
         // WE NEED TO UPDATE QUANTITY
-        console.log("employeeitem ", this.props.employee);
         this.props.updateEmployee(this.props.employee, _id);
       }
     } else {

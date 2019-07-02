@@ -6,7 +6,6 @@ import {render} from 'react-dom';
 import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 import EmployeesList from './components/pages/employeesList';
 import ReviewsList from './components/pages/reviewsList';
-import Cart from './components/pages/cart';
 import LoginForm from './components/pages/loginForm';
 import EmployeesForm from './components/pages/employeesForm';
 import ReviewsFormAdmin from './components/pages/reviewsFormAdmin';

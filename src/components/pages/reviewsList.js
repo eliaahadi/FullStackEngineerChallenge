@@ -13,7 +13,6 @@ class ReviewsList extends React.Component{
   }
   render(){
     const reviewsList =this.props.reviews.map(function(reviewsArr){
-      console.log('review List Array ', reviewsArr)
       return(
         <Col xs={12} sm={6} md={4}
         key={reviewsArr._id}>
@@ -25,7 +24,6 @@ class ReviewsList extends React.Component{
         </Col>
       ) 
     })
-    console.log('\n \n reviews list component ', <ReviewItem />);
     return(
         <Grid>
         <Row style={{marginTop:'15px'}}> 

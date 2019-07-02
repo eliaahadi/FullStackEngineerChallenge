@@ -20,7 +20,6 @@ class EmployeesForm extends React.Component{
   }
    
   componentDidMount(){
-    // console.log('\n \n employeeForm this props \n \n', this.props)
     this.setState({...this.state, isFetching: true});
       this.props.getEmployees();
      this.setState({...this.state, isFetching: false});
@@ -28,13 +27,10 @@ class EmployeesForm extends React.Component{
      axios.get('/api/employees')
     .then(function(response){
       this.setState({employees:response.data});
-      console.log('employee state', this.state.employees);
     }.bind(this))
     .catch(function(err){
       this.setState({employees:'error loading employees files from the server', employee:''})
     }.bind(this))
-
-    
   }
   addEmployeeSubmit(){
     const employee =
@@ -47,7 +43,6 @@ class EmployeesForm extends React.Component{
       alert('Employee name must not be empty to save it')
     } else {
       this.props.postEmployee(employee);
-
     }
     console.log("post employees ", this.props.postEmployee, employee, employee[0].name)
   }
@@ -57,16 +52,13 @@ class EmployeesForm extends React.Component{
     [
       {
         name: findDOMNode(this.refs.updatename).value,
-        // images:findDOMNode(this.refs.image).value,
       }
     ]
     if (employee[0].name === "") {
       alert('Employee name must not be empty to save it')
     } else {
       this.props.updateEmployee(employee, this.state.showValues._id);
-
     }
-    console.log("update employees SUBMIT ", this.refs, employee, this.state.showValues._id)
   }
 
   onDelete(){
@@ -79,21 +71,12 @@ class EmployeesForm extends React.Component{
     }
   }
   handleSelect(employee){
-    console.log('handle select employee ', employee, employee._id)
     this.setState({
       employee: employee._id
     })
-    // let inputValues = this.state.values;
     this.setState({showValues: employee});
   }
 
-  handleEmployee(employee){
-    console.log('handle select employee ', employee, employee._id)
-    // this.setState({
-    //   employee: employee._id
-    // })
-    // this.setState({showValues: employee});
-  }
   resetFormAdd(){
     //RESET THE ADD Button
     this.props.resetButton();
@@ -122,26 +105,11 @@ class EmployeesForm extends React.Component{
     const employeesListSelect = this.props.employees.map(function(employeeArr){
       return (
        <li key={employeeArr._id}>
-   id:{employeeArr._id} - name: {employeeArr.name}
+        id:{employeeArr._id} - name: {employeeArr.name}
        </li> 
         )
       }, this)
-    //     <Col key={employeesArr._id}>
-    //       <Col>
-    //        {employeesArr._id} 
-    //       </Col>
-    //       <Col >
-    //           {employeesArr.title} 
-    //       </Col>
-    //       <Col >
-    //       {employeesArr.description} 
-    //       </Col>
-    //       <Col>
-    //         {employeesArr.price} 
-    //       </Col> 
-    //    </Col>
-    //   )
-    // })
+
     const employeesList =
     this.state.employees.map(function(employeeArr){
       return(
@@ -153,7 +121,6 @@ class EmployeesForm extends React.Component{
         </MenuItem>
         )
       }, this)
-
 
     return(
       <div>
@@ -229,11 +196,9 @@ class EmployeesForm extends React.Component{
         </Panel>
       </Col>
     </Row>
-
-
-  </Well>
-      <ReviewsFormAdmin/>
-      </div>
+    </Well>
+    <ReviewsFormAdmin/>
+    </div>
     )
   } 
 }
